@@ -175,12 +175,14 @@ namespace JointGraph
             JointGraph jointGraph = new JointGraph();
             foreach (IPXJoint joint in pmx.Joint) {
                 Node jointNode = makeJointNode(joint);
-                Node bodyANode = makeBodyNode(joint.BodyA);
-                Node bodyBNode = makeBodyNode(joint.BodyB);
-
-                // (bodyA) -> [joint] -> (bodyB)
-                jointGraph.addEdge(bodyANode, jointNode);
-                jointGraph.addEdge(jointNode, bodyBNode);
+                if (null != joint.BodyA) {
+                    Node bodyANode = makeBodyNode(joint.BodyA);
+                    jointGraph.addEdge(bodyANode, jointNode);
+                }
+                if (null != joint.BodyB) {
+                    Node bodyBNode = makeBodyNode(joint.BodyB);
+                    jointGraph.addEdge(jointNode, bodyBNode);
+                }
             }
             // register isolated rigid bodies
             foreach (IPXBody body in pmx.Body) {
